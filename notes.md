@@ -1,4 +1,4 @@
-Bookmark: Page 34
+Bookmark: Page 45
 
 ## Links
 * [F# Language Reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/)
@@ -39,3 +39,10 @@ Bookmark: Page 34
 * To run the application just run `dotnet run` inside of the folder you just created.
 * Debugging F# works in the same in Visual Studio as it does for C#. Same story applies to Visual Studio Code.
 * **Note**: Notice how the string formatter of `printf`, `printfn`, and `sprintf` are type checked. Very cool!
+
+### Lesson 3: The REPL - Changing How Develop
+* The REPL or *Read Evaluate Print Loop* helps quickly test out small snippets of code.
+* The F# REPL can be started by running the following: `dotnet fsi`
+* It mentions the C# has a primitive REPL in VS2015 called C# Interactive, which appears to be
+  absent in .Net Core 3.1.
+* Note that you have to terminate statements in `fsi` with `;;`. The only real reason for this is that it's what ocaml did.
