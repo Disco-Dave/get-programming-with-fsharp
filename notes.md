@@ -46,3 +46,5 @@ Bookmark: Page 45
 * It mentions the C# has a primitive REPL in VS2015 called C# Interactive, which appears to be
   absent in .Net Core 3.1.
 * Note that you have to terminate statements in `fsi` with `;;`. The only real reason for this is that it's what ocaml did.
+* To run a script run the following `dotnet fsi name_of_script.fsx`
+* To load a script and play with it in the REPL run `dotnet fsi --use:name_of_script.fsx`
