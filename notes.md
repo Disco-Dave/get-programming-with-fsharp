@@ -1,4 +1,4 @@
-Bookmark: Page 45
+Bookmark: Page 58
 
 ## Links
 * [F# Language Reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/)
@@ -48,3 +48,35 @@ Bookmark: Page 45
 * Note that you have to terminate statements in `fsi` with `;;`. The only real reason for this is that it's what ocaml did.
 * To run a script run the following `dotnet fsi name_of_script.fsx`
 * To load a script and play with it in the REPL run `dotnet fsi --use:name_of_script.fsx`
+
+### Lesson 4: Saying a Little, Doing a Lot
+* Overview:
+    * Basic syntax, in particular the `let` keyword
+    * Write more complex functions and values
+    * Scoping
+* Author reiterates the following:
+    * The syntax is lightweight and the type system is powerful.
+    * The language is designed to solve *complex* problems with *simple* code.
+    * The goal is to write code without thinking first about design patterns.
+* Semicolons are not required unless putting multiple statements on one line.
+* `let` keyword
+    * [let bindings in F# language reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/functions/let-bindings)
+    * Used to bind any value to a symbol
+    * May or may not include a type annotation
+    * May be used to define functions
+* "It's better to think of let bindings as copy-and-paste directives; wherever you see the symbol,
+   replace it with the value that was originally assigned during the declaration."
+   * This is actually the concept of [referential transparency](https://en.wikipedia.org/wiki/Referential_transparency)
+   * The same should apply to functions as well
+* The language does allow [shadowing](https://en.wikipedia.org/wiki/Variable_shadowing)
+    * Important for use with the REPL
+    * Not the most useful outside of the REPL
+* Whitespace is used for scoping.
+* Brackets are not used, except for computation expressions.
+* There is no `return` keyword, except for computation expressions. The last line of an expression
+  is the return value.
+* `public` is the default accessibility modifier.
+* Functions defined with `let` are static
+* We can nest functions or values an arbitrary amount
+* F# is strict about the ordering of functions and files.
+* **ACTION:** install a Windows 10 virtual machine to try out the win forms example
