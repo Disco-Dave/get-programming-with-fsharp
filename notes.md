@@ -1,4 +1,4 @@
-Bookmark: Page 58
+Bookmark: Page 92
 
 ## Links
 * [F# Language Reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/)
@@ -80,3 +80,43 @@ Bookmark: Page 58
 * We can nest functions or values an arbitrary amount
 * F# is strict about the ordering of functions and files.
 * **ACTION:** install a Windows 10 virtual machine to try out the win forms example
+
+### Lesson 5: Trusting the Compiler
+* Overview:
+    * Type inference
+* Unlike C#, F# can infer types of parameters and return types.
+* F# does not allow implicit conversions
+* Limits of type inference
+    * Can have trouble inferring a type if all you do is call method for example:
+        * `let getLength name = name.Length` won't compile
+        * `let getLength (name: string) = name.Length` will compile
+    * Overloaded methods on classes
+* F# can also infer generic types by specifying an underscore or omitting them all together.
+* The type inference will always try to infer the most generic form.
+
+### Lesson 6: Working with Immutable Data
+* Overview:
+    * Basic syntax for working with immutable and mutable data
+    * Reasons to consider immutability as the default
+    * Simple examples of working with immutable values to manage changing state
+* Using immutable data structures isn't inherently slower
+* Easier to reason to about and test
+* Limits the need to hide data since it's immutable
+* Limits the need to have locks in multi threaded environments 
+
+### Lesson 7: Expressions and Statements
+* Overview:
+    * Differences between expressions and statements
+    * Pros and cons of both
+    * How expressions when coupled with the type system allow you to write more succinct code
+* Statements do not return anything, and always have side effects
+* Expressions always do return something, and may have side effects (hopefully not)
+* C# is strongly statement based, the majority of its program flow is about side effects and statements.
+* F# is heavily expression based
+* No such thing as a void function in F#. Must use `unit` instead.
+* All program flow branching mechanisms are expressions
+* All values are expressions
+* When everything are expressions that there is no need for a return keyword.
+* If you want to disregard a function's result that isn't unit, you have to use the ignore function.
+
+### Lesson 8: Capstone 1

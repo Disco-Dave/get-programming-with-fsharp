@@ -38,16 +38,21 @@ let estimateAges familyName years = // familyName:string -> years:int seq -> str
     let calculateAge yearOfBirth =
         let year = DateTime.Now.Year
         year - yearOfBirth
-    //let averageAge = Seq.averageBy (calculateAge >> double) years
-    let averageAge =
-        let ages = Seq.map (fun y -> double(calculateAge y)) years
-        if Seq.isEmpty ages then
-            0.0
-        else
-            let numberOfPeople = Seq.length ages
-            let sumOfAges = Seq.sum ages
-            sumOfAges / (double numberOfPeople)
+    let averageAge = Seq.averageBy (calculateAge >> double) years
+    //let averageAge =
+    //    let ages = Seq.map (fun y -> double(calculateAge y)) years
+    //    if Seq.isEmpty ages then
+    //        0.0
+    //    else
+    //        let numberOfPeople = Seq.length ages
+    //        let sumOfAges = Seq.sum ages
+    //        sumOfAges / (double numberOfPeople)
 
     sprintf "Average age for family %s is %.0f" familyName averageAge
 
 estimateAges "Burkett" [1995; 1991; 1987; 1966; 1961]
+
+
+
+
+
