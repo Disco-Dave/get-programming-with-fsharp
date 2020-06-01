@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Location.fs" />
+    <Compile Include="DestinationInfo.fs" />
+    <None Include="scratchpad.fsx" />
+    <Compile Include="Car.fs" />
+    <Compile Include="Game.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
