@@ -13,14 +13,14 @@ type DriveError =
 module Car =
     let init =
         { Location = None
-          RemainingPetrol = 100}
+          RemainingPetrol = 100 }
 
     let drive location car =
         let isAlreadyAtLocation =
-            car.Location 
-            |> Option.map ((=) location)
-            |> Option.defaultWith (fun () -> false)
-                
+            car.Location
+            |> Option.map((=) location)
+            |> Option.defaultWith(fun () -> false)
+
         let destinationInfo = DestinationInfo.fromLocation location
         let hasEnoughPetrol = car.RemainingPetrol >= destinationInfo.PetrolReqiured
 
@@ -33,5 +33,7 @@ module Car =
             if newPetrol <= 0 then
                 Error OutOfPetrol
             else
-                Ok {RemainingPetrol = newPetrol; Location = Some location}
-            
+                Ok
+                    { RemainingPetrol = newPetrol
+                      Location = Some location }
+

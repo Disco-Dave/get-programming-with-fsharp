@@ -14,18 +14,18 @@ type Location =
         | Stadium -> "stadiuam"
         | Office -> "office"
         | GasStation -> "gas station"
-        
+
 
 [<RequireQualifiedAccess>]
 module Location =
-    let fromString str =
-        let str =
-            if String.IsNullOrWhiteSpace(str)
-                then ""
-                else str.Trim().ToLower()
-        match str with
-        | "home" -> Some Home
-        | "stadium" -> Some Stadium
-        | "office" -> Some Office
-        | "gas station" -> Some GasStation
+    let fromString location =
+        let location = 
+            Option.ofObj location 
+            |> Option.map(fun (s: string) -> s.ToLower().Trim())
+
+        match location with
+        | Some "home" -> Some Home
+        | Some "stadium" -> Some Stadium
+        | Some "office" -> Some Office
+        | Some "gas station" -> Some GasStation
         | _ -> None
