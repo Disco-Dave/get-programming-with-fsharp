@@ -49,6 +49,8 @@ Bookmark: Page 92
 * To run a script run the following `dotnet fsi name_of_script.fsx`
 * To load a script and play with it in the REPL run `dotnet fsi --use:name_of_script.fsx`
 
+## Unit 2: Hello F#
+
 ### Lesson 4: Saying a Little, Doing a Lot
 * Overview:
     * Basic syntax, in particular the `let` keyword
