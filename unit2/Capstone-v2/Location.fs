@@ -11,7 +11,7 @@ type Location =
     override this.ToString() =
         match this with
         | Home -> "home"
-        | Stadium -> "stadiuam"
+        | Stadium -> "stadium"
         | Office -> "office"
         | GasStation -> "gas station"
 

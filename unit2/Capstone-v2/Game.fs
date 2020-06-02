@@ -21,8 +21,6 @@ type IConsole =
     abstract ReadLine: unit -> string
 
 let start(console: IConsole) =
-    let initialCar = Car.init
-
     let rec loop car =
         console.Write("Enter destination: ")
         let location = console.ReadLine()
@@ -32,12 +30,13 @@ let start(console: IConsole) =
         | UserError msg ->
             console.WriteLine msg
             loop car
-        | Advance car ->
+        | Advance newCar ->
             let currentLocation =
-                match car.Location with
+                match newCar.Location with
                 | None -> "no where"
                 | Some l -> l.ToString()
-            console.WriteLine(sprintf "Made it to %s! You have %d petrol left" currentLocation car.RemainingPetrol)
-            loop car
+            let msg = sprintf "Made it to %s! You have %d petrol left" currentLocation newCar.RemainingPetrol
+            console.WriteLine msg
+            loop newCar
 
-    loop initialCar
+    loop Car.init
