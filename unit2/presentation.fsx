@@ -117,3 +117,18 @@ let test x y =
       "is less than"
   else 
       "is greater than"
+      
+      
+// Opening namespaces or modules
+open System.IO
+
+let writeTextToDisk text =
+    let path = Path.GetTempFileName()
+    System.IO.File.WriteAllText(path, text)    
+
+let createManyFiles() =
+    writeTextToDisk "The quick brown fox jumped over the lazy dog"
+    writeTextToDisk "The quick brown fox jumped over the lazy dog"
+    writeTextToDisk "The quick brown fox jumped over the lazy dog"
+
+createManyFiles()
