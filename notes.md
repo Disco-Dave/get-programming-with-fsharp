@@ -1,4 +1,4 @@
-Bookmark: Page 111
+Bookmark: Page 125
 
 ## Links
 * [F# Language Reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/)
@@ -142,3 +142,21 @@ Bookmark: Page 111
 * Tuples are often not the best choice for public APIs
 
 ### Lesson 10: Shaping Data with Records
+* Overview:
+    * What are Records
+    * Records compared to C# classes
+    * How to alter records while still retaining immutability
+    * Tips for working with records
+* Benefits over POCO
+    * Immutable
+    * Automatic structural equality of the entire object graph
+    * Enforces that all fields are set
+* The compiler infers what record you mean by the properties you're initializes
+* You can be explicit about the type by either putting the type on the left side
+  of a let or prefixing field with the type name. As shown on page 118
+* The compiler can also infer the record you mean by how use an instance of a record
+* We can change values of a record with a *copy and update* like syntax using the 
+  `with` keyword.
+* **NOTE:** "This way of working is a great fit for event-based architectures, where you record
+  all changes to data over time as immutable events and versions of records."
+* We can use shadowing to avoid having to come up with nonsense names.
