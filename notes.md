@@ -1,4 +1,4 @@
-Bookmark: Page 92
+Bookmark: Page 111
 
 ## Links
 * [F# Language Reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/)
@@ -121,4 +121,24 @@ Bookmark: Page 92
 * When everything are expressions that there is no need for a return keyword.
 * If you want to disregard a function's result that isn't unit, you have to use the ignore function.
 
-### Lesson 8: Capstone 1
+## Unit 3: Types and Functions
+
+### Lesson 9: Shaping Data with Tuples
+* Overview:
+    * How tuples are used within F#
+    * When to use them and when not
+    * How tuples work with type inference
+    * How tuples relate to the rest of .NET
+* A function that parses a string and returns the forename and surname is a great
+  use case for using a tuple.
+* Apparently F# had better support for tuples before F# did
+* You should use tuples for internal helpers and for storing intermediary state
+* Tuples types show up something like `string * int * double`
+* You can deconstruct tuples
+* You can nest tuples
+* When deconstructing tuples you can discard elements with an underscore
+* Type inference works how you would expect with tuples in F#
+* F# handles out params from C# and VB really well
+* Tuples are often not the best choice for public APIs
+
+### Lesson 10: Shaping Data with Records
