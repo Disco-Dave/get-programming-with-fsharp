@@ -73,3 +73,9 @@ let randomizeAge customer =
 randomizeAge
     { Name = "Bob"
       Age = 30 }
+
+// TODO: Exercise on 129
+
+let (|>) (x: 'a) (f: 'a -> 'b): 'b = f x
+let (>>) (g: 'a -> 'b) (f: 'b -> 'c): ('a -> 'c) = fun a -> f (g a)
+

@@ -1,4 +1,4 @@
-Bookmark: Page 125
+Bookmark: Page 160
 
 ## Links
 * [F# Language Reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/)
@@ -160,3 +160,42 @@ Bookmark: Page 125
 * **NOTE:** "This way of working is a great fit for event-based architectures, where you record
   all changes to data over time as immutable events and versions of records."
 * We can use shadowing to avoid having to come up with nonsense names.
+
+### Lesson 11: Building Composable Functions
+* Overview:
+    * F# functions compared to methods
+    * Partial Application
+    * `|>` and `>>`
+* **NOTE:** No overloading with `let` bound functions
+* Difference between tupled and curried functions
+* Forward pipe operator `let (|>) (x: 'a) (f: 'a -> 'b): 'b = f x`
+* Compose operator `let (>>) (g: 'a -> 'b) (f: 'b -> 'c): ('a -> 'c) = fun a -> f (g a)`
+* The forward pipe operator should feel familiar to anyone who does shell scripting. `|`
+* "You’ll find that the pipeline is extremely useful for composing code together into a
+   human-readable domain-specific language (DSL)." This what the author does in *Domain
+   Modelling Made Functional*
+* You can use partial application to build simple wrapper like functions, like the date time example
+  on page 128
+
+### Lesson 12: Organizing Code without Classes
+* Overview:
+    * Namespaces
+    * Modules
+    * How to use them with a standalone application
+* In F# we can follow a few simple rules to organize code:
+    * Place related types together in namespaces
+    * Place related stateless functions together in modules
+* Namespacing works exactly the same as it does in C# and VB.Net
+* We can open namespaces using the `open` keyword. Fun fact: this can be anywhere in your code
+* You can only store types and modules in namespaces
+* Modules can hold let-bound stuff
+* Modules are sort of like static classes
+* Modules are sort of like namespacing but can also store functions
+* You may also arbitrary nest namespaces and modules
+* Namespaces may span mutliple files, where modules can't
+* Use modules to store functions and types that are tightly coupled to those functions
+* Use namespaces to logically group types and modules
+
+### Lesson 13: Achieving Code Reuse in F#
+* High-order functions
+* Pass functions or interfaces as the first argument of functions. Useful for partial application
