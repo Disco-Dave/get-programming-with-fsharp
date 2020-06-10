@@ -1,4 +1,4 @@
-namespace Captstone2.Domain
+namespace Capstone2.Domain
 
 open System
 
@@ -27,18 +27,32 @@ module Bank =
 
     let getAccount accountNumber (Bank bank) = Map.tryFind accountNumber bank
 
+    type DepositError =
+        | AccountNotFound
+        | NegativeAmount
+
     let deposit accountNumber amount (Bank bank) =
         match Map.tryFind accountNumber bank with
-        | Some account when amount > 0M ->
+        | Some account when amount >= 0M ->
             let account = { account with Balance = account.Balance + amount }
-            Map.add accountNumber account bank
-        | _ -> bank
-        |> Bank
+            let bank = Map.add accountNumber account bank
+            Ok bank
+        | Some _ -> Error NegativeAmount
+        | _ -> Error AccountNotFound
+        |> Result.map Bank
+
+    type WithdrawError =
+        | AccountNotFound
+        | NegativeAmount
+        | InsufficientFunds
 
     let withdraw accountNumber amount (Bank bank) =
         match Map.tryFind accountNumber bank with
-        | Some account when account.Balance >= amount && amount > 0M ->
+        | None -> Error AccountNotFound
+        | Some _ when amount < 0M -> Error NegativeAmount
+        | Some account when account.Balance < amount -> Error InsufficientFunds
+        | Some account ->
             let account = { account with Balance = account.Balance - amount }
-            Map.add accountNumber account bank
-        | _ -> bank
-        |> Bank
+            let bank = Map.add accountNumber account bank
+            Ok bank
+        |> Result.map Bank
