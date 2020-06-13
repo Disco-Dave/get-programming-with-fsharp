@@ -1,4 +1,4 @@
-Bookmark: Page 160
+Bookmark: Page 186
 
 ## Links
 * [F# Language Reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/)
@@ -199,3 +199,19 @@ Bookmark: Page 160
 ### Lesson 13: Achieving Code Reuse in F#
 * High-order functions
 * Pass functions or interfaces as the first argument of functions. Useful for partial application
+
+## Unit 4: Collections in F#
+
+### Lesson 15: Working with Collections in F#
+* Overview:
+    * Introduce F# Collection types
+    * How to think about transformations in terms of pipelines
+    * How to use immutable collections
+* There are three modules to be familiar with:
+    1. Seq
+    2. List
+    3. Array
+* Declarative vs imperative
+* Show indexing and slicing
+* F# List are native. They are linked lists and immutable. Unlike C#'s which are ArrayLists and mutable
+* Talk about figure 15.6
