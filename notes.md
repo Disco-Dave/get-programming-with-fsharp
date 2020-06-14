@@ -1,4 +1,4 @@
-Bookmark: Page 186
+Bookmark: Page 229
 
 ## Links
 * [F# Language Reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/)
@@ -215,3 +215,44 @@ Bookmark: Page 186
 * Show indexing and slicing
 * F# List are native. They are linked lists and immutable. Unlike C#'s which are ArrayLists and mutable
 * Talk about figure 15.6
+
+### Lesson 16: Useful collection functions
+* Overview:
+    * The most common collection functions
+    * Comparison with System.Linq
+    * Difference between imperative and declarative
+    * Moving between collection types
+* `map` - converts items inside of a collection from one shape to another shape. Similar to `.Select`
+* See also: `mapi`, `map2`, `map3`, `mapi2`, `indexed`
+* `iter` - same as map, but the mapping function returns `unit`. Useful for side-effects.
+* See also: `iteri`, `iter2`, `iter3`, `iteri2`
+* `collect` - Similar to `.SelectMany`. More commonly know as `FlatMap` or `Bind`
+* The author notes that you can implement `map` in terms of `collect`. That's because `Bind` is part of a monad, and all monad's are functors.
+* `pairwise` - takes a list and returns a new list of tuple pairs of the original adjacent items. Similar to `windowed`
+* `groupBy` - simpler version of `.GroupBy`
+* `countBy` - similar to `groupBy` but returns a count instead of a collection
+* `partition` - divides a collection into two based on a predicate
+* `chunkBySize` - is the same function we use called `.Batch`
+* Aggregates: `sum`, `average`, `max`, `min`, `fold`
+* All of three of the modules have functions that allow you to easily convert between the two.
+
+### Lesson 17: Maps, Dictionaries, and Sets
+* Overview:
+    * Working with the standard generic dictionary in F#
+    * Creating immutable dictionaries with `IDictionary`
+    * Using the F# specific `Map`
+    * Using the F# specific `Set`
+* Remember when using Generic Dictionary F# index's using a dot
+* We can omit generic types with `_` or just omit them completely
+* The dictionary from System.Collections.Generic is mutable :(. But Map from F# is not
+* We use the `Map` module to construct and manipulate Maps
+* We can construct and manipulate immutable sets with `Set` module
+
+
+### Lesson 18: Folding your way to success
+* Overview:
+    * Understanding aggregations and accumulation
+    * Avoiding mutation through fold
+    * Building rules engines and functional chains
+* `fold` - an alternative to recursion
+* seq computation expression
