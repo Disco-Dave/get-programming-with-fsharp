@@ -5,5 +5,5 @@ type IConsoleReader =
     abstract member ReadKey: unit -> char
 
 module ConsoleReader =
-    let writeLine (cw: #IConsoleReader) = cw.ReadLine
-    let write (cw: #IConsoleReader) = cw.ReadKey
+    let readLine (cw: #IConsoleReader) = cw.ReadLine()
+    let readKey (cw: #IConsoleReader) = cw.ReadKey()

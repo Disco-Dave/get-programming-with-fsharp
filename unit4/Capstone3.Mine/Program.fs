@@ -1,8 +1,16 @@
-﻿// Learn more about F# at http://fsharp.org
+﻿open System
+open Capstone3.Effect
 
-open System
+type private IEnv =
+    inherit IConsoleWriter
+    inherit IConsoleReader
+
+let private env =
+    { new IEnv with
+        member _.Write msg = Console.Write msg
+        member _.WriteLine msg = Console.WriteLine msg
+        member _.ReadLine() = Console.ReadLine()
+        member _.ReadKey() = (Console.ReadKey true).KeyChar }
 
 [<EntryPoint>]
-let main argv =
-    printfn "Hello World from F#!"
-    0 // return an integer exit code
+let main _ = 0
