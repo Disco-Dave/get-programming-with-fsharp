@@ -77,7 +77,7 @@ let getTransactionLog customer =
         |> Seq.map (Decode.fromString Decode.transaction)
         |> flip (Seq.foldBack collectOk) []
     else
-        use _f = File.Create fileName
+        (File.Create fileName).Dispose()
         []
 
 let log {Transaction = transaction; Customer = customer} =
