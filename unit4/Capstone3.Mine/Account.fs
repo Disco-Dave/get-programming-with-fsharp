@@ -68,7 +68,7 @@ module Account =
     let lastTransaction {History = history} =
         List.tryHead history
 
-    let handle (account: Account) request =
+    let handle request (account: Account) =
         let transaction =
             match request with
             | Deposit _  ->

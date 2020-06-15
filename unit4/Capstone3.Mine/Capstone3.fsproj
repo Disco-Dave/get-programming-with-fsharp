@@ -6,7 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Effect/ConsoleWriter.fs" />
+    <Compile Include="Effect/ConsoleReader.fs" />
     <Compile Include="Account.fs" />
+    <Compile Include="Audit.fs" />
+    <Compile Include="Logger/Console.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
