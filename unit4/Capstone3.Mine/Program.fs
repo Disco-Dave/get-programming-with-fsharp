@@ -16,5 +16,5 @@ let private env =
 
 [<EntryPoint>]
 let main _ =
-    Teller.start env [| Console.log env |]
+    Teller.start env [| Console.log env; FileStore.log |]
     0

@@ -50,10 +50,6 @@ type Account =
 
 [<RequireQualifiedAccess>]
 module Account =
-    let ``open`` customer =
-        { Customer = customer
-          History = [] }
-
     let lastTransaction {History = history} =
         List.tryHead history
 

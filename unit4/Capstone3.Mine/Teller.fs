@@ -17,7 +17,9 @@ let rec private getAccount env =
     | Error Customer.IsEmpty ->
         ConsoleWriter.writeLine env "The name may not be empty"
         getAccount env
-    | Ok customer -> Account.``open`` customer
+    | Ok customer -> 
+        let transactionLog = FileStore.getTransactionLog customer
+        { Customer = customer; History = transactionLog }
 
 let rec private getAmount env =
     ConsoleWriter.write env "Enter amount: "
@@ -45,7 +47,10 @@ let start env loggers =
     |> Account.balance
     |> (ConsoleWriter.writeLine env << sprintf "Current balance: %M")
 
-    userInputs env
-    |> Seq.takeWhile((<>) 'q')
-    |> Seq.fold (handleInput env loggers) account
-    |> printf "%A"
+    let closingAccount =
+        userInputs env
+        |> Seq.takeWhile((<>) 'q')
+        |> Seq.fold (handleInput env loggers) account
+
+    sprintf "You're closing balance is %M. Goodbye." (Account.balance closingAccount)
+    |> ConsoleWriter.writeLine env 
