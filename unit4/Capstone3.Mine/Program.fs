@@ -1,5 +1,7 @@
 ﻿open System
+open Capstone3
 open Capstone3.Effect
+open Capstone3.Logger
 
 type private IEnv =
     inherit IConsoleWriter
@@ -13,4 +15,6 @@ let private env =
         member _.ReadKey() = (Console.ReadKey true).KeyChar }
 
 [<EntryPoint>]
-let main _ = 0
+let main _ =
+    Teller.start env [| Console.log env |]
+    0

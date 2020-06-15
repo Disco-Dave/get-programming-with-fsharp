@@ -11,6 +11,7 @@
     <Compile Include="Account.fs" />
     <Compile Include="Audit.fs" />
     <Compile Include="Logger/Console.fs" />
+    <Compile Include="Teller.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

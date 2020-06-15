@@ -10,9 +10,9 @@ type Log = Summary -> unit
 
 type Handle = Request -> Account -> Account
 
-let auditWith (loggers: Log seq) (handle: Handle) (request: Request) (account: Account) =
+let auditWith loggers handle (account: Account) request =
     let customer = account.Customer
-    let beforeBalance = account.Balance
+    let beforeBalance = Account.balance account
     let newAccount = handle request account
     let log summary = Seq.iter ((|>) summary) loggers
 
@@ -21,7 +21,7 @@ let auditWith (loggers: Log seq) (handle: Handle) (request: Request) (account: A
     |> Option.iter(fun transaction ->
         log { Customer = customer
               BeforeBalance = beforeBalance
-              AfterBalance = newAccount.Balance
+              AfterBalance = Account.balance newAccount
               Transaction = transaction })
 
     newAccount
