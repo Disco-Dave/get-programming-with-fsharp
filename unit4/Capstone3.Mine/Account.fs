@@ -1,84 +1,48 @@
 namespace Capstone3
 
-open System
-
-type Currency = decimal
-
 type Request =
-    | Withdraw of Currency
-    | Deposit of Currency
+    | Withdraw of decimal
+    | Deposit of decimal
 
-type Status =
-    | Accepted
-    | Rejected of reason: string
-
-type Transaction =
-    { Timestamp: DateTime
-      Status: Status
-      Request: Request }
-
-[<RequireQualifiedAccess>]
-module Transaction =
-    let accept request =
-        { Timestamp = DateTime.UtcNow
-          Status = Accepted
-          Request = request }
-
-    let reject reason request =
-        { Timestamp = DateTime.UtcNow
-          Status = Rejected reason
-          Request = request }
-
-type Customer = private | Customer of string
-
-[<RequireQualifiedAccess>]
-module Customer =
-    type Error = IsEmpty
-
-    let make customer =
-        if String.IsNullOrWhiteSpace customer 
-            then Error IsEmpty 
-            else Ok <| Customer (customer.Trim())
-
-    let toString (Customer customer) = customer
-
-
-type Account = 
+type Account =
     { Customer: Customer
-      History: Transaction list }
+      Transactions: Transaction<Request> list }
 
-
-[<RequireQualifiedAccess>]
 module Account =
-    let lastTransaction {History = history} =
-        List.tryHead history
+    let restore customer transactions =
+        { Customer = customer
+          Transactions = transactions }
 
-    let balance account =
-        let runAction runningBalance { Request = req } =
-            match req with
+    let lastTransaction { Transactions = transactions } =
+        List.tryHead transactions
+
+    let balance { Transactions = transactions } =
+        let execute runningBalance { Request = request } =
+            match request with
             | Withdraw amount -> runningBalance - amount
             | Deposit amount -> runningBalance + amount
 
-        account.History
-        |> List.sortBy(fun t -> t.Timestamp)
+        transactions
         |> List.filter(fun t -> t.Status = Accepted)
-        |> List.fold runAction 0M
+        |> List.sortBy(fun t -> t.Timestamp)
+        |> List.fold execute 0M
 
-    let handle request (account: Account) =
+    let handle request account =
+        let amount =
+            match request with
+            | Withdraw a -> a
+            | Deposit a -> a
+
+
         let transaction =
-            let amount = 
-                match request with
-                | Deposit a -> a
-                | Withdraw a -> a
-
             if amount <= 0M then
-                Transaction.reject "Negative or 0 amount." request
-            else 
+                Transaction.reject "Negative or 0 amount" request
+            else
+                let currentBalance = balance account
                 match request with
-                | Deposit _  ->
+                | Withdraw _ when currentBalance < amount -> 
+                    Transaction.reject "Insufficient funds" request
+                | _ -> 
                     Transaction.accept request
-                | Withdraw amount when balance account >= amount ->
-                    Transaction.accept request
-                | Withdraw _ -> 
-                    Transaction.reject "Insufficient funds." request
-        { account with History = transaction :: account.History }
+
+        { account with Transactions = transaction :: account.Transactions }

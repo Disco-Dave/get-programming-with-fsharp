@@ -1,10 +1,12 @@
 module Capstone3.Audit
 
+open Capstone3
+
 type Summary =
     { Customer: Customer
-      BeforeBalance: Currency
-      AfterBalance: Currency
-      Transaction: Transaction }
+      BeforeBalance: decimal
+      AfterBalance: decimal
+      Transaction: Transaction<Request> }
 
 type Log = Summary -> unit
 

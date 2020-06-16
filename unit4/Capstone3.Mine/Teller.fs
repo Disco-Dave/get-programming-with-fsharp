@@ -1,56 +1,55 @@
 module Capstone3.Teller
 
 open System
-open Capstone3.Audit
-open Capstone3.Effect
+open Capstone3
 
-let private userInputs env = seq {
-    while true do
-        ConsoleWriter.write env "(w)ithdraw, (d)eposit, or (q)uit: "
-        let input = ConsoleReader.readKey env |> Char.ToLower
-        ConsoleWriter.writeLine env ""
-        input }
-
-let rec private getAccount env =
-    ConsoleWriter.write env "Enter your name: "
-    match ConsoleReader.readLine env |> Customer.make with
+let rec getCustomer env =
+    Communicate.say env "Enter name: "
+    match Communicate.askLine env |> Customer.make with
     | Error Customer.IsEmpty ->
-        ConsoleWriter.writeLine env "The name may not be empty"
-        getAccount env
-    | Ok customer -> 
-        let transactionLog = FileStore.getTransactionLog customer
-        { Customer = customer; History = transactionLog }
+        Communicate.sayLine env "Name may not be empty."
+        getCustomer env
+    | Ok customer -> customer
 
-let rec private getAmount env =
-    ConsoleWriter.write env "Enter amount: "
-    let (isValid, amount) = ConsoleReader.readLine env |> Decimal.TryParse
-    if isValid then amount else getAmount env
+let prompt env account =
+    sprintf "Current balance is $%M." (Account.balance account) |> Communicate.sayLine env
+    Communicate.say env "(d)eposit, (w)ithdraw, (q)uit: "
 
-let private handleInput env loggers account input =
-    let makeRequest =
-        match input with
-        | 'w' -> Some Withdraw
-        | 'd' -> Some Deposit
-        | _ -> None
+let userInputs env =
+    seq {
+        while true do
+            Communicate.askChar env |> Char.ToLower
+    }
 
-    match makeRequest with
-    | None -> account
-    | Some req ->
-        getAmount env
+let handleInput env account input =
+    Communicate.sayLine env ""
+
+    let rec getAmount() =
+        Communicate.say env "Enter amount: "
+        let (isValid, amount) = Communicate.askLine env |> Decimal.TryParse
+        if isValid then amount else getAmount()
+
+    let runAction req =
+        getAmount()
         |> req
-        |> auditWith loggers Account.handle account
+        |> Computer.alterAccount env account
 
-let start env loggers =
-    let account = getAccount env
+    let newAccount =
+        match input with
+        | 'w' -> runAction Withdraw
+        | 'd' -> runAction Deposit
+        | _ -> account
 
-    account
-    |> Account.balance
-    |> (ConsoleWriter.writeLine env << sprintf "Current balance: %M")
+    prompt env newAccount
 
-    let closingAccount =
-        userInputs env
-        |> Seq.takeWhile((<>) 'q')
-        |> Seq.fold (handleInput env loggers) account
+    newAccount
 
-    sprintf "You're closing balance is %M. Goodbye." (Account.balance closingAccount)
-    |> ConsoleWriter.writeLine env 
+let interact env =
+    let account = getCustomer env |> Computer.retrieveAccount env
+
+    prompt env account
+
+    userInputs env
+    |> Seq.takeWhile((<>) 'q')
+    |> Seq.fold (handleInput env) account
+    |> ignore

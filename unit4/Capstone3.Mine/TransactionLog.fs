@@ -1,4 +1,4 @@
-module Capstone3.FileStore
+module Capstone3.TransactionLog
 
 open System
 open System.IO
@@ -57,15 +57,15 @@ module private Encode =
               "status", status tran.Status
               "request", request tran.Request ]
 
-let private fileName customer =
+let private fileName env customer =
     let dataHome = ".store"
-    Directory.CreateDirectory dataHome |> ignore
+    FileSystem.createDirectory env dataHome |> ignore
     sprintf "%s/%s" dataHome (Customer.toString customer)
             
-let getTransactionLog customer =
-    let fileName = fileName customer
+let getTransactionLog env customer =
+    let fileName = fileName env customer
 
-    if File.Exists fileName then
+    if FileSystem.doesFileExist env fileName then
         let collectOk r xs = 
             match r with
             | Ok o -> o :: xs
@@ -73,15 +73,14 @@ let getTransactionLog customer =
 
         let flip f a b = f b a
 
-        File.ReadLines fileName
+        FileSystem.readLines env fileName
         |> Seq.map (Decode.fromString Decode.transaction)
         |> flip (Seq.foldBack collectOk) []
     else
-        (File.Create fileName).Dispose()
+        FileSystem.createFile env fileName
         []
 
-let log {Transaction = transaction; Customer = customer} =
-    use sw = File.AppendText(fileName customer)
+let log env {Transaction = transaction; Customer = customer} =
     Encode.transaction transaction
     |> Encode.toString 0
-    |> sw.WriteLine
+    |> FileSystem.appendText env (fileName env customer)
