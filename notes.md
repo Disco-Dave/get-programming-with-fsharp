@@ -214,7 +214,7 @@ Bookmark: Page 229
 * Declarative vs imperative
 * Show indexing and slicing
 * F# List are native. They are linked lists and immutable. Unlike C#'s which are ArrayLists and mutable
-* Talk about figure 15.6
+* Talk about figure 15.6 (::) and (@)
 
 ### Lesson 16: Useful collection functions
 * Overview:
