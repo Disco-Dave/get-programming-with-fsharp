@@ -32,7 +32,6 @@ let results =
         HomeGoals = 1
         AwayGoals = 2 } ]
 
-// Write a function to pick the team who won the most away games in the season
 let mostAwayGamesWon soccerResults =
     let awayWins =
         soccerResults
