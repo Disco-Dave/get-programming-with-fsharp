@@ -1,4 +1,4 @@
-Bookmark: Page 229
+Bookmark: Page 297
 
 ## Links
 * [F# Language Reference](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/)
@@ -256,3 +256,48 @@ Bookmark: Page 229
     * Building rules engines and functional chains
 * `fold` - an alternative to recursion
 * seq computation expression
+
+
+## Unit 5: The pit of success with the F# type system
+
+### Lesson 20: Program flow in F#
+* Overview:
+    * for/while loops
+    * if/then expressions
+    * switch/case statements
+    * pattern matching
+* Comprehensions
+* Pattern matching
+    * Exhaustive checking
+    * Warns us about unreachable patterns
+    * Test against single source
+    * Match using patterns that represent specific cases
+    * Expression
+    * Wild card is _
+    * Guards
+    * Top down
+* Pattern match against lists, arrays, records
+* Should prefer pattern matching
+
+### Lesson 21: Modeling Relationships in F#
+* Overview: Discriminated Unions
+* Ways to think of them:
+    1. Similar to type hierarchy, but it is *closed*. Must define all sub types up front, can't add more in other places.
+    2. A form of C#-style enums, but with the ability to add metadata to each enum case.
+* Forces us to exhaustively pattern match to use them.
+
+### Lesson 22: Fixing the Billion-Dollar Mistake
+* Overview: Optional data
+* `null` is bad. Tony Hoare regrets inventing and even C# compiler team has admitted they wish they never added it.
+* F# makes it difficult to assign `null` to any F# declared type. It only exists to deal with C#/VB.Net
+* To handle optional values we should use the `Option<'a>` type instead.
+
+### Lesson 23: Business rules as code
+* Make illegal states *unrepresentable*
+* Single-case discriminated unions can be used to create wrapper types.
+    * Documentation to our types
+    * Prevent accidentally mixing up values
+    * Can make the constructor private to establish as "smart-constructor" 
+* Clever use of discriminated unions can be used to encode business rules
+* We can use mark types to indicate the state a value is in, like is `GenuineCustomer`
+* Use the `Result<'a>` type to represent things that may fail.
