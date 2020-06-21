@@ -29,7 +29,7 @@ let tryParseAmount str =
     match tryParse Decimal.TryParse str with
     | None -> Error "Malformed decimal"
     | Some dec ->
-        match Amount.make dec with
+        match PositiveAmount.make dec with
         | None -> Error "Amount may not be negative"
         | Some amount -> Ok amount
     

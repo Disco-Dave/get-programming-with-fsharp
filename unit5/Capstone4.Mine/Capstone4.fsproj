@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <Compile Include="Customer.fs" />
-    <Compile Include="Amount.fs" />
+    <Compile Include="PositiveAmount.fs" />
     <Compile Include="Account.fs" />
     <Compile Include="Communicate.fs" />
     <Compile Include="Computer.fs" />

@@ -27,7 +27,7 @@ module Account =
         |> rateAccount
 
     let private updateBalance op amount account =
-        { account with Balance = op (account.Balance) (Amount.unwrap amount) } 
+        { account with Balance = op (account.Balance) (PositiveAmount.unwrap amount) } 
         |> rateAccount
 
     let deposit amount = 
