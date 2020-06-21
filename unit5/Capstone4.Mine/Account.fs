@@ -1,47 +1,37 @@
-namespace Capstone3
-
-type Request =
-    | Withdraw of decimal
-    | Deposit of decimal
+namespace Capstone4
 
 type Account =
     { Customer: Customer
-      Transactions: Transaction<Request> list }
+      Balance: decimal }
+
+type CreditAccount = private | CreditAccount of Account
+
+type RatedAccount =
+    | Overdrawn of Account
+    | InCredit of CreditAccount
 
 module Account =
-    let restore customer transactions =
+    let account =
+        function
+        | Overdrawn a -> a
+        | InCredit (CreditAccount a) -> a
+
+    let rateAccount account =
+        if account.Balance >= 0M 
+            then InCredit <| CreditAccount account 
+            else Overdrawn account
+
+    let make customer =
         { Customer = customer
-          Transactions = transactions }
+          Balance = 0M }
+        |> rateAccount
 
-    let lastTransaction { Transactions = transactions } =
-        List.tryHead transactions
+    let private updateBalance op amount account =
+        { account with Balance = op (account.Balance) (Amount.unwrap amount) } 
+        |> rateAccount
 
-    let balance { Transactions = transactions } =
-        let execute runningBalance { Request = request } =
-            match request with
-            | Withdraw amount -> runningBalance - amount
-            | Deposit amount -> runningBalance + amount
+    let deposit amount = 
+        account >> updateBalance (+) amount
 
-        transactions
-        |> List.filter(fun t -> t.Status = Accepted)
-        |> List.sortBy(fun t -> t.Timestamp)
-        |> List.fold execute 0M
-
-    let handle request account =
-        let amount =
-            match request with
-            | Withdraw a -> a
-            | Deposit a -> a
-
-        let transaction =
-            if amount <= 0M then
-                Transaction.reject "Negative or 0 amount" request
-            else
-                let currentBalance = balance account
-                match request with
-                | Withdraw _ when currentBalance < amount -> 
-                    Transaction.reject "Insufficient funds" request
-                | _ -> 
-                    Transaction.accept request
-
-        { account with Transactions = transaction :: account.Transactions }
+    let withdraw amount (CreditAccount account) = 
+        updateBalance (-) amount account

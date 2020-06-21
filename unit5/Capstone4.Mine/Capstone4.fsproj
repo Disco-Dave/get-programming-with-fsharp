@@ -6,16 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Transaction.fs" />
     <Compile Include="Customer.fs" />
+    <Compile Include="Amount.fs" />
     <Compile Include="Account.fs" />
-    <Compile Include="Computer.fs" />
     <Compile Include="Communicate.fs" />
-    <Compile Include="FileSystem.fs" />
+    <Compile Include="Computer.fs" />
     <Compile Include="Teller.fs" />
-    <Compile Include="Audit.fs" />
-    <Compile Include="ConsoleLog.fs" />
-    <Compile Include="TransactionLog.fs" />
+    <Compile Include="FileStore.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

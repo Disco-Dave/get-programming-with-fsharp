@@ -1,4 +1,4 @@
-module Capstone3.Communicate
+module Capstone4.Communicate
 
 type ISay = abstract Say: string -> unit
 let say (communicate: #ISay) = communicate.Say
@@ -11,3 +11,4 @@ let askChar (communicate: #IAskChar) = communicate.AskChar()
 
 type IAskLine = abstract AskLine: unit -> string
 let askLine (communicate: #IAskLine) = communicate.AskLine()
+

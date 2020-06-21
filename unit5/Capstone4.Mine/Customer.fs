@@ -1,19 +1,18 @@
-namespace Capstone3
-
-open System
+namespace Capstone4
 
 type Customer = private | Customer of string
 
-[<RequireQualifiedAccess>]
 module Customer =
+    let unwrap (Customer customer) = customer
+
     type Error = IsEmpty
 
-    let make name =
-        if String.IsNullOrWhiteSpace name then
-            Error IsEmpty
-        else
-            name.Trim()
-            |> Customer
-            |> Ok
+    let private (|Trim|) (str: string) =
+        Option.ofObj str
+        |> Option.map (fun (s: string) -> s.Trim())
+        |> Option.defaultWith (fun _ -> "")
 
-    let toString (Customer customer) = customer
+    let make (Trim customer) =
+        match customer with
+        | "" -> Error IsEmpty
+        | c -> Ok <| Customer c

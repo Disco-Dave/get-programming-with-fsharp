@@ -1,9 +1,15 @@
-module Capstone3.Computer
+module Capstone4.Computer
 
-open Capstone3
+open Capstone4
 
-type IRetrieveAccount = abstract member Retrieve: Customer -> Account
-let retrieveAccount (computer: #IRetrieveAccount) = computer.Retrieve
+type IRetrieve = abstract member Retrieve: Customer -> RatedAccount option
+let retrieve (computer: #IRetrieve) = computer.Retrieve
 
-type IAlterAccount = abstract member Alter: Account -> Request -> Account
-let alterAccount (computer: #IAlterAccount) = computer.Alter   
+type ISave = abstract member Save: RatedAccount -> unit
+let save (computer: #ISave) = computer.Save
+
+type IDeposit = abstract member Deposit: Amount -> RatedAccount -> RatedAccount
+let deposit (computer: #IDeposit) = computer.Deposit
+
+type IWithdraw = abstract member Withdraw: Amount -> CreditAccount -> RatedAccount
+let withdraw (computer: #IWithdraw) = computer.Withdraw

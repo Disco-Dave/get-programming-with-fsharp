@@ -1,84 +1,106 @@
-module Capstone3.Teller
+module Capstone4.Teller
 
 open System
-open Capstone3
 
-let rec getCustomer env =
-    Communicate.say env "Enter name: "
-    match Communicate.askLine env |> Customer.make with
-    | Error Customer.IsEmpty ->
-        Communicate.sayLine env "Name may not be empty."
-        getCustomer env
-    | Ok customer -> customer
-
-let prompt env account =
-    sprintf "Current balance is $%M." (Account.balance account) |> Communicate.sayLine env
-    Communicate.say env "(d)eposit, (w)ithdraw, (q)uit: "
-
-let userInputs env =
-    seq {
-        while true do
-            Communicate.askChar env
-    }
-
-type AccountAction =
+type AccountAlteration =
     | Withdraw
     | Deposit
 
-type Input =
-    | Exit
-    | Action of AccountAction
+type CustomerRequest =
+    | Leave
+    | AlterAccount of AccountAlteration
 
-let parseInput rawInput =
-    match Char.ToLower rawInput with
-    | 'w' -> Some <| Action Withdraw
-    | 'd' -> Some <| Action Deposit
-    | 'q' -> Some Exit
+let tryParse parse (str: string) =
+    let (isValid, a) = parse str
+    if isValid then Some a else None
+
+let tryParseCustomerRequest ch =
+    match Char.ToLower ch with
+    | 'q' -> Ok Leave
+    | 'w' -> Ok <| AlterAccount Withdraw
+    | 'd' -> Ok <| AlterAccount Deposit
+    | _ -> Error "Invalid command"
+
+let tryGetAlteration = function
+    | AlterAccount alteration -> Some alteration
     | _ -> None
 
-let handleAction env account action =
-    Communicate.sayLine env ""
-
-    let rec getAmount() =
-        Communicate.say env "Enter amount: "
-        let (isValid, amount) = Communicate.askLine env |> Decimal.TryParse
-        if isValid then 
-            amount 
-        else 
-            Communicate.sayLine env "Invalid amount."
-            getAmount()
-
-    let runAction req =
-        getAmount()
-        |> req
-        |> Computer.alterAccount env account
-
-    let newAccount =
-        match action with
-        | Withdraw -> runAction Request.Withdraw
-        | Deposit -> runAction Request.Deposit
-
-    prompt env newAccount
-
-    newAccount
+let tryParseAmount str =
+    match tryParse Decimal.TryParse str with
+    | None -> Error "Malformed decimal"
+    | Some dec ->
+        match Amount.make dec with
+        | None -> Error "Amount may not be negative"
+        | Some amount -> Ok amount
+    
+let alterAccount env ratedAccount (request, amount) =
+    match request with
+    | Deposit -> Ok <| Computer.deposit env amount ratedAccount
+    | Withdraw ->
+        match ratedAccount with
+        | Overdrawn _ ->
+            Error "Can not withdraw from overdrawn account"
+        | InCredit account ->
+            Ok <| Computer.withdraw env amount account
 
 let interact env =
-    let account = getCustomer env |> Computer.retrieveAccount env
+    let inputStream = seq { while true do Communicate.askChar env } 
 
-    prompt env account
+    let prompt account = 
+        (Account.account account).Balance
+        |> sprintf "Current balance is %M"
+        |> Communicate.sayLine env
 
-    let handleInput account = function
-        | None ->
-            Communicate.sayLine env "Invalid command."
-            prompt env account
-            account
-        | Some (Action action) ->
-            handleAction env account action
-        | Some Exit ->
-            account
+        Communicate.say env "(w)ithdraw, (d)eposit, or (q)uit: "
 
-    userInputs env
-    |> Seq.map parseInput
-    |> Seq.takeWhile((<>) (Some Exit))
-    |> Seq.fold handleInput account
-    |> ignore
+
+    let hush = function
+        | Ok a -> Some a
+        | Error _ -> None
+
+    let printErrorIfNeeded res =
+        match res with
+        | Error msg -> Communicate.sayLine env msg
+        | _ -> ()
+        res
+
+    let addAmount input =
+        Communicate.sayLine env ""
+        Communicate.say env "Enter amount: "
+        match Communicate.askLine env |> tryParseAmount with
+        | Ok amount -> Ok (input, amount)
+        | Error message -> Error message
+
+    let alterAccount account res = 
+        let newAccount =
+            match Result.bind (alterAccount env account) res with
+            | Error msg -> 
+                Communicate.sayLine env msg
+                account
+            | Ok a -> a
+        prompt newAccount
+        newAccount
+
+    let customer =
+        let rec go () =
+            Communicate.say env "Enter name: "
+            match Communicate.askLine env |> Customer.make with
+            | Ok c -> c
+            | Error Customer.Error.IsEmpty ->
+                Communicate.sayLine env "Name may not be empty"
+                go ()
+        go ()
+
+    let account =
+        Computer.retrieve env customer
+        |> Option.defaultWith (fun () -> Account.make customer)
+            
+    prompt account
+
+    inputStream
+    |> Seq.map tryParseCustomerRequest
+    |> Seq.takeWhile ((<>) (Ok Leave))
+    |> Seq.choose (printErrorIfNeeded >> hush >> Option.bind tryGetAlteration)
+    |> Seq.map addAmount
+    |> Seq.fold alterAccount account
+    |> Computer.save env
