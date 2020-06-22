@@ -1,7 +1,5 @@
 namespace CapstoneUnit2
 
-open System
-
 type Location =
     | Home
     | Stadium
