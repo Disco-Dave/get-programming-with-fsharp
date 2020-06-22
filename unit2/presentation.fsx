@@ -63,7 +63,7 @@ let internal notAsSecret = 555
 // https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/functions/#scope
 // Scoping is done with white space, we can nest functions and variables arbitrarily deep
 
-let estimateAges familyName years =
+let estimateAges familyName years = // familyName:string -> years:int seq -> string
     let calculateAge yearOfBirth =
         let year = System.DateTime.Now.Year
         year - yearOfBirth

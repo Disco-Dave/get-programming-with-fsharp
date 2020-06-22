@@ -15,7 +15,7 @@ module Car =
         { Location = None
           RemainingPetrol = 100 }
 
-    let drive (location: Location) (car: Car): Result<Car, DriveError> =
+    let drive location car =
         let isAlreadyAtLocation =
             car.Location
             |> Option.map((=) location)

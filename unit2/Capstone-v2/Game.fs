@@ -22,9 +22,9 @@ type IConsole =
 
 let start(console: IConsole) =
     let rec loop car =
-        console.Write "Enter destination: "
+        console.Write("Enter destination: ")
         let location = console.ReadLine()
-        console.WriteLine (sprintf "Trying to drive to %s" location)
+        console.WriteLine(sprintf "Trying to drive to %s" location)
         match handleEvent location car with
         | GameOver msg -> console.WriteLine msg
         | UserError msg ->
