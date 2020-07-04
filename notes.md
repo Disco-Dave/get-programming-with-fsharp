@@ -301,3 +301,33 @@ Bookmark: Page 297
 * Clever use of discriminated unions can be used to encode business rules
 * We can use mark types to indicate the state a value is in, like is `GenuineCustomer`
 * Use the `Result<'a>` type to represent things that may fail.
+
+## Unit 6: Living on .NET
+
+### Lesson 25: Consuming C# from F#
+* It's easy to create hybrid solutions
+* Visual studio 2019 works as you'd expect
+* Can easily consume other assemblies, files, and scripts within an F# script
+* Constructors of objects are just functions
+* How to implement interfaces
+    * Requires up-cast
+    * Explicit implementation
+* Object expressions
+* Converting back and fourth between null/Nullable with Option functions
+    * Option.ofObj/Option.toObj
+    * Option.fromNullable/Option.toNullable
+
+### Lesson 26: Working with nuget packages
+* You can reference nuget packages just fine
+* You don't *need* paket
+* The .net core cli has a nicer interface for nuget packages
+
+### Lesson 27: Exposing F# types and functions to C#
+* Records appear as classes with non default constructors and properties with only getters
+* Namespaces are the same
+* Modules are static classes
+* Functions appear in their tupled form, except for functions that are partially applied.
+* Discriminated Unions may be kinda clumsy. TODO: See what if it's any better with C# 8?
+* Try to avoid exposing `List`
+* CLIMutable
+* Units of Measure and Type Providers are erased at compile-time
